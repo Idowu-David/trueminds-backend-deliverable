@@ -1,0 +1,38 @@
+1. Users (users)
+This table will handle authentication and distinguish between your two user types: Customer and Admin.
+
+Columns: id, email, first_name, last_name, phone_number, password_hash, role, referral_code, is_verified.
+
+Why: The brief specifically requires the system to allow sign-ups using an email or a phone number. It also requires fields to handle optional referral codes and OTP account verification.
+
+2. Food Items (food_items) 
+This table acts as the restaurant's digital menu.
+
+Columns: id, name, description, price, is_available.
+
+Why: Admins need the ability to update prices and easily mark items as unavailable when they run out of stock.
+
+3. Cart & Cart Items (carts & cart_items)
+These tables manage the temporary selection of food before checkout.
+
+carts Columns: id, user_id.
+
+cart_items Columns: id, cart_id, food_item_id, quantity.
+
+Why: You need a primary carts table linked to the user, and a secondary cart_items table to hold the multiple different dishes a user might want to buy at once.
+
+4. Orders & Order Items (orders & order_items)
+These tables are the core of the transaction.
+
+orders Columns: id, user_id, total_price, status, created_at.
+
+order_items Columns: id, order_id, food_item_id, quantity, price_at_purchase.
+
+Why: The system must calculate and store the total price. The status column is crucial for tracking the lifecycle through states like Pending, Confirmed, Preparing, and Out for Delivery. Storing the price_at_purchase is a vital edge-case fix; it prevents past receipts from changing if the admin updates a food price later on.
+
+5. Ratings (ratings)
+This table handles the customer feedback.
+
+Columns: id, user_id, food_item_id, rating_value, review_text.
+
+Why: This links a specific customer to a specific food item they ordered, allowing them to leave a score and a comment.
