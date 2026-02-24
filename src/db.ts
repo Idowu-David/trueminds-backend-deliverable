@@ -3,6 +3,7 @@ export interface User {
   email: string;
   phoneNumber: string;
   firstName: string;
+  role: "user" | "admin";
   lastName: string;
   passwordHash: string;
   referralCode?: string | undefined;

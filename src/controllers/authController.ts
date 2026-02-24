@@ -3,6 +3,8 @@ import { users, type User } from "../db.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
+const JWT_SECRET_KEY = process.env.JWT_SECRET_KEY as string
+
 export const signup = async (req: Request, res: Response) => {
   const { email, firstName, lastName, password, referralCode, phoneNumber } =
     req.body;
@@ -60,6 +62,7 @@ export const signup = async (req: Request, res: Response) => {
     isVerified: false,
     otp: generatedOtp,
     otpExpiry: expiryTime,
+    role: "user",
   };
 
   users.push(newUser);
@@ -118,7 +121,7 @@ export const verify = async (req: Request, res: Response) => {
   user.otp = undefined;
   user.otpExpiry = undefined;
 
-  const token = jwt.sign({ userId: user.id, email: user.email }, "secretkey", {
+  const token = jwt.sign({ userId: user.id, email: user.email, role: user.role }, JWT_SECRET_KEY, {
     expiresIn: "1h",
   });
 
