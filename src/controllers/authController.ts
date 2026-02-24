@@ -29,8 +29,6 @@ export const signup = async (req: Request, res: Response) => {
       (phoneNumber && user.phoneNumber === phoneNumber),
   );
 
-  console.log("USER", existingUser);
-
   if (existingUser) {
     res.status(400).json({
       success: false,
