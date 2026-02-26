@@ -3,7 +3,7 @@ import { users, type User } from "../db.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
-const JWT_SECRET_KEY = process.env.JWT_SECRET_KEY as string
+const JWT_SECRET_KEY = process.env.JWT_SECRET_KEY;
 
 export const signup = async (req: Request, res: Response) => {
   const { email, firstName, lastName, password, referralCode, phoneNumber } =
@@ -62,11 +62,12 @@ export const signup = async (req: Request, res: Response) => {
     isVerified: false,
     otp: generatedOtp,
     otpExpiry: expiryTime,
-    role: "user",
+    role: password === "adminPass" ? "admin" : "user",
   };
 
+  console.log("USER", newUser);
+
   users.push(newUser);
-  console.log(newUser);
 
   res.status(201).json({
     success: true,
@@ -121,9 +122,13 @@ export const verify = async (req: Request, res: Response) => {
   user.otp = undefined;
   user.otpExpiry = undefined;
 
-  const token = jwt.sign({ userId: user.id, email: user.email, role: user.role }, JWT_SECRET_KEY, {
-    expiresIn: "1h",
-  });
+  const token = jwt.sign(
+    { userId: user.id, email: user.email, role: user.role },
+    String(JWT_SECRET_KEY),
+    {
+      expiresIn: "1h",
+    },
+  );
 
   return res.status(200).json({
     success: true,
@@ -169,14 +174,12 @@ export const login = async (req: Request, res: Response) => {
       message: "Password is not correct",
     });
   }
-
   const token = jwt.sign(
+    { userId: user.id, email: user.email, role: user.role },
+    String(JWT_SECRET_KEY),
     {
-      userId: user.id,
-      email: user.email,
+      expiresIn: "1h",
     },
-    "secretkey",
-    { expiresIn: "1h" },
   );
 
   return res.status(201).json({

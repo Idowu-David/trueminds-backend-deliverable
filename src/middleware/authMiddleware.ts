@@ -11,7 +11,7 @@ export interface AuthRequest extends Request {
   user?: JwtPayload;
 }
 
-const JWT_SECRET = process.env.JWT_SECRET as string;
+const JWT_SECRET = process.env.JWT_SECRET_KEY;
 
 export const protectRoute = (
   req: AuthRequest,
@@ -30,9 +30,7 @@ export const protectRoute = (
   const token = authHeader.split(" ")[1] as string;
 
   try {
-    const decoded = jwt.verify(token, JWT_SECRET) as JwtPayload;
-
-    console.log("DECODED", decoded);
+    const decoded = jwt.verify(token, String(JWT_SECRET)) as JwtPayload;
 
     req.user = decoded;
     next();

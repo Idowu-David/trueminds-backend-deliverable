@@ -21,6 +21,20 @@ export interface MenuItem {
   isAvailable: boolean;
 }
 
+export interface OrderItem {
+  foodId: string;
+  quantity: number;
+  priceAtPurchase: number;
+}
+
+export interface Order {
+  id: string;
+  userId: string;
+  items: OrderItem[];
+  status: "Pending" | "Preparing" | "Ready" | "Delivered" | "Cancelled";
+  createdAt: Date;
+}
+
 export const users: User[] = [];
 export const menu: MenuItem[] = [
   {
@@ -58,3 +72,4 @@ export const menu: MenuItem[] = [
     isAvailable: false,
   },
 ];
+export const orders: Order[] = [];

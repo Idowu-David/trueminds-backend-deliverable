@@ -33,3 +33,32 @@ export const getMenuItemById = async (req: Request, res: Response) => {
   });
 };
 
+export const addItemToStock = async (req: Request, res: Response) => {
+  const { name, description, price, category, isAvailable } = req.body;
+
+  if (!name || !price || !category) {
+    return res.status(400).json({
+      success: false,
+      message: "Name, Price and Category are required",
+    });
+  }
+
+  const foodId = `food_${menu.length + 1}`;
+
+  const newFoodItem: MenuItem = {
+    id: foodId,
+    name,
+    description,
+    category,
+    price,
+    isAvailable: isAvailable !== undefined ? isAvailable : true
+  };
+
+  menu.push(newFoodItem);
+
+  return res.status(201).json({
+    success: true,
+    message: "Food item successfully added",
+    data: newFoodItem
+  });
+};

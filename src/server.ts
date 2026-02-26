@@ -3,9 +3,13 @@ import express, {
   type Request,
   type Response,
 } from "express";
+import dotenv from "dotenv";
+
+dotenv.config();
 import cors from "cors";
 import authRoutes from "./routes/authRoutes.js";
 import menuRoutes from "./routes/menuRoutes.js";
+import { authorizeAdmin } from "./middleware/authMiddleware.js";
 
 const app = express();
 const PORT = 3000;
