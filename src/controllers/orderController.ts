@@ -1,4 +1,4 @@
-import { type Response } from "express";
+import { type Response, type Request } from "express";
 import { type AuthRequest } from "../middleware/authMiddleware.js";
 import { menu, orders, type Order, type OrderItem } from "../db.js";
 
@@ -64,5 +64,83 @@ export const createOrder = (req: AuthRequest, res: Response) => {
     success: true,
     message: "Order placed successfully!",
     data: newOrder,
+  });
+};
+
+export const getUserOrders = (req: AuthRequest, res: Response) => {
+  const userId = req.user?.userId;
+
+  const myOrders = orders.filter((order) => order.userId === userId);
+
+  return res.status(200).json({
+    success: true,
+    message: "Order history retrieved successfully.",
+    count: myOrders.length,
+    data: myOrders,
+  });
+};
+
+export const getOrderById = (req: AuthRequest, res: Response) => {
+  const userId = req.user?.userId;
+  const { id } = req.params;
+
+  const order = orders.find((order) => order.id === id);
+
+  if (!order) {
+    return res.status(404).json({
+      success: false,
+      message: "Order not found",
+    });
+  }
+
+  if (order.userId !== userId) {
+    return res.status(403).json({
+      success: false,
+      message: "Unauthorized access to this order",
+    });
+  }
+
+  return res.status(200).json({
+    success: true,
+    message: "Order details retrieved",
+    data: order,
+  });
+};
+
+export const updateOrderStatus = (req: Request, res: Response) => {
+  const { id } = req.params;
+  const { status } = req.body;
+
+  const validStatuses = [
+    "Pending",
+    "Preparing",
+    "Ready",
+    "Delivered",
+    "Cancelled",
+  ];
+
+  if (!validStatuses.includes(status)) {
+    return res.status(400).json({
+      success: false,
+      message: `Invalid status. Must be one of: ${validStatuses.join(", ")}`,
+    });
+  }
+
+  const order = orders.find((o) => o.id === id);
+
+  if (!order) {
+    return res
+      .status(404)
+      .json({ success: false, message: "Order not found." });
+  }
+
+  // 3. Update the status!
+  order.status = status;
+
+  // 4. Send the updated receipt back
+  return res.status(200).json({
+    success: true,
+    message: `Order status successfully updated to ${status}`,
+    data: order,
   });
 };
