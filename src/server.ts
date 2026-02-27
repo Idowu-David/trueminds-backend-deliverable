@@ -6,10 +6,10 @@ import express, {
 import dotenv from "dotenv";
 
 dotenv.config();
-import cors from "cors";
+
 import authRoutes from "./routes/authRoutes.js";
 import menuRoutes from "./routes/menuRoutes.js";
-import { authorizeAdmin } from "./middleware/authMiddleware.js";
+import orderRoutes from "./routes/orderRoutes.js";
 
 const app = express();
 const PORT = 3000;
@@ -29,7 +29,8 @@ app.get("/", (req: Request, res: Response) => {
 });
 
 app.use("/api/auth", authRoutes);
-app.use("/api/menu", menuRoutes);
+app.use("/api/foods", menuRoutes);
+app.use("/orders", orderRoutes);
 
 app.listen(PORT, () => {
   console.log(`Backend is running on http://localhost:${PORT}`);

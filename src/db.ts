@@ -32,6 +32,7 @@ export interface Order {
   userId: string;
   items: OrderItem[];
   status: "Pending" | "Preparing" | "Ready" | "Delivered" | "Cancelled";
+  totalAmount: number;
   createdAt: Date;
 }
 
