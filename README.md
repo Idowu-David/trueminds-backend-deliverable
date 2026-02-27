@@ -3,28 +3,34 @@
 
 A secure, role-based backend API built for the TrueMinds Food Ordering System. This RESTful API handles user authentication, menu management, and secure order processing with server-side price calculations.
 
-## 🚀 Tech Stack
+## Tech Stack
 * **Runtime:** Node.js
 * **Framework:** Express.js
 * **Language:** TypeScript
 * **Authentication:** JSON Web Tokens (JWT) & bcrypt
 
-## ✨ Core Features
+## Core Features
 * **User Authentication:** Secure signup and login functionality with password hashing.
 * **Role-Based Access Control (RBAC):** Middleware-driven authorization separating standard `user` accounts from `admin` restaurant managers.
 * **Menu Management:** Admins can dynamically add new food items, update availability, and manage prices.
 * **Secure Checkout:** Order totals are strictly calculated server-side using database price snapshots to prevent frontend manipulation.
 * **Order Tracking:** Users can fetch their complete order history and track the status of current orders.
 
-## 🛠️ Installation & Setup
+## Installation & Setup
 
 1. **Clone the repository:**
-   git clone https://github.com/Idowu-David/trueminds-backend-deliverable
+   ```bash
+   git clone [https://github.com/Idowu-David/trueminds-backend-deliverable](https://github.com/Idowu-David/trueminds-backend-deliverable)
+   cd trueminds-backend-deliverable
 
-   cd trueminds-backend-delieverable
+```
 
 2. **Install dependencies:**
+```bash
 npm install
+
+```
+
 
 3. **Set up Environment Variables:**
 Create a `.env` file in the root directory and add the following keys:
@@ -42,9 +48,10 @@ npm run dev
 ```
 
 
+
 The server will start running on `http://localhost:3000`.
 
-## 📡 API Endpoints Overview
+## API Endpoints Overview
 
 ### Authentication (`/api/auth`)
 
@@ -64,8 +71,6 @@ The server will start running on `http://localhost:3000`.
 * `GET /:id` - Fetch details of a specific order *(Protected)*.
 * `PATCH /:id/status` - Update the preparation/delivery status of an order *(Admin only)*.
 
-## 👨‍💻 Author
+## Author
 
 **David Idowu** | Full-Stack Web Developer
-
-```
